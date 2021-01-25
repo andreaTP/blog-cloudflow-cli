@@ -85,3 +85,6 @@ kubectl lp -o yaml
 
 Another very useful by-product is the fact that we have been able to re-use the Cli directly from ScalaTest (importing it as a dependency) and we have now full-Scala Integration tests without the need to run an external process and with helpful error messages in case something fails.
 We plan as well to port the Cloudflow operator to use the very same CRD/CR definition, immediatly reducing to 0 the possibility to introduce discrepancy in between the the CLI and the operator itself.
+
+
+<TODO check the CI>
