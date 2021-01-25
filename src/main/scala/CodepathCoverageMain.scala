@@ -2,7 +2,6 @@ import commands.format
 
 object CodepathCoverageMain extends App {
 
-
   OptionsParser(args)
 
   val logger: CliLogger = new CliLogger(Some("trace"))
