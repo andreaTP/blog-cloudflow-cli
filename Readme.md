@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Since a few months I started working in [Lightbend](https://www.lightbend.com/), an my firsts assignments have been around a little known and super-powerfull product called [Cloudflow](https://cloudflow.io/).
+Since a few months I started working in [Lightbend](https://www.lightbend.com/), and my firsts assignments have been around a little known and super-powerful product called [Cloudflow](https://cloudflow.io/).
 TL;DR [Cloudflow](https://cloudflow.io/) is a set of libraries, tools, plugins to get you up-to-speed in developing Streaming applications on Kubernetes on top of popular streaming engines (Akka, Spark and Flink).
 
 One of the strenght of [Cloudflow](https://cloudflow.io/) is it's CLI that comes in the form of a `kubectl plugin`.
@@ -11,7 +11,7 @@ In the CLI we perform an incredible amount of checks and validations that will p
 At the time I joined [Lightbend](https://www.lightbend.com/), the CLI used to be a classic Go application, organically grown up to the point technical debt prevented from easily adding functionalities and doing bug-fixes.
 Another reason to reconsider that choice is the fact that support for Cloudflow's configuration format [HOCON](https://github.com/lightbend/config) is pretty poor in Go and caused a number of open issues not easly fixable.
 
-We decided to entierly re-write the CLI with those principles:
+We decided to entirely re-write the CLI with those principles:
  - programming language the team is comfortable with -> Scala
  - native performance -> GraalVM AOT
  - industry's standard libraries -> Fabric8 Kubernetes Client
@@ -19,7 +19,7 @@ We decided to entierly re-write the CLI with those principles:
 
 ## Give me the code!
 
-The demo project we will refer to, is directly extracted from the Cloudflow's CLI, adapted to an example based this great article: [Kubectl's pugins in Java](https://dev.to/ikwattro/write-a-kubectl-plugin-in-java-with-jbang-and-fabric8-566) that happened to be published during our re-write.
+The demo project we will refer to, is directly extracted from the Cloudflow's CLI, adapted to an example based this great article: [Kubectl's plugins in Java](https://dev.to/ikwattro/write-a-kubectl-plugin-in-java-with-jbang-and-fabric8-566) that happened to be published during our re-write.
 
 The code is available here:
 <TODO>
@@ -53,7 +53,7 @@ In this example we use a few great libraries that, among others, have immensely 
 We reserve a special section to [GraalVM](https://github.com/oracle/graal), and, for the purpose of this post, we refer exclusively at the Ahead Of Time compilation functionality.
 
 GraalVM enabled us to compile Scala code with Scala and Java dependencies directly down to native binaries so that, the user, wouldn't incur into the JVM long start-up time.
-Is an amazing project but it comes with a few challenges that we faced and solved!
+It's an amazing project but it comes with a few challenges that we faced and solved!
 
 Unfortunately GraalVM compilation should be [configured](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/) and this configuration can become costly and risky to maintain; luckly we completely own the scope of our CLI and we can automate the generation of such configuration by simply training it against a real cluster.
 This boild down to run `sbt regenerateGraalVMConfig` every time we do a significant change to the CLI, this command will run an alternative `Main` of our application, intended to cover most of the possible codepaths.
