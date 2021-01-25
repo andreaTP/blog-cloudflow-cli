@@ -1,0 +1,108 @@
+name: Release Cloudflow Cli Binaries
+# initial inspiration from:
+# https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/.github/workflows/simple-socket-fn-logger.yaml
+
+on:
+  push:
+
+jobs:
+  build-macosx-image:
+    name: 'Build MacOsX Image'
+    runs-on: macos-10.15
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Set up GraalVM JDK 11'
+        uses: olafurpg/setup-scala@v10
+        with:
+          java-version: graalvm-ce-java11@20.1.0
+
+      - name: 'Install Native Image Plugin'
+        run: |
+          gu install native-image
+
+      - name: 'Cache Coursier cache'
+        uses: coursier/cache-action@v5
+
+      - name: 'Build Native Image'
+        run: |
+          sbt cloudflow-cli/graalvm-native-image:packageBin
+
+      - name: 'Publish Native Image'
+        if: success()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'kubectl-cloudflow-${{steps.vars.outputs.tag}}-darwin'
+          path: 'cloudflow/tools/cloudflow-cli/target/graalvm-native-image/kubectl-cloudflow'
+
+  build-linux-image:
+    name: 'Build Linux Image'
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Set up GraalVM JDK 11'
+        uses: olafurpg/setup-scala@v10
+        with:
+          java-version: graalvm-ce-java11@20.1.0
+
+      - name: 'Cache Coursier cache'
+        uses: coursier/cache-action@v5
+
+      - name: 'Build Native Image'
+        env:
+          VERSION: ${{ steps.vars.outputs.tag }}
+        run: |
+          docker pull andreatp/graalvm-ce:20.1.0-java11
+          docker tag andreatp/graalvm-ce:20.1.0-java11 oracle/graalvm-ce:20.1.0-java11
+
+          sbt setVersionFromTag
+          sbt linuxStaticBuild
+
+      - name: 'Publish Native Image'
+        if: success()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'kubectl-cloudflow-${{steps.vars.outputs.tag}}-linux'
+          path: 'cloudflow/tools/cloudflow-cli/target/graalvm-native-image/kubectl-cloudflow'
+
+  build-windows-image:
+    name: 'Build Windows Image'
+    runs-on: windows-2019
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v1
+
+      - name: 'Set up GraalVM JDK 11'
+        uses: olafurpg/setup-scala@v10
+        with:
+          java-version: graalvm-ce-java11@20.1.0
+
+      - name: 'Install Native Image'
+        run: |
+          gu.cmd install native-image
+
+      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
+        run: |
+          choco install visualstudio2017-workload-vctools
+
+      - name: 'Cache Coursier cache'
+        uses: coursier/cache-action@v5
+
+      - name: 'Build Native Image'
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          sbt winGraalBuild
+
+      - name: 'Publish Windows Image'
+        if: success()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'kubectl-cloudflow-${{steps.vars.outputs.tag}}-win'
+          path: '.\cloudflow\tools\cloudflow-cli\target\kubectl-cloudflow.exe'
