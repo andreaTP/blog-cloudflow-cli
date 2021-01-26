@@ -1,4 +1,3 @@
-import java.text.SimpleDateFormat
 import scala.jdk.CollectionConverters._
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.databind.ObjectMapper
