@@ -2,8 +2,9 @@ name: Release Cloudflow Cli Binaries
 # initial inspiration from:
 # https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/.github/workflows/simple-socket-fn-logger.yaml
 
-on:
-  push:
+# disable until release
+# on:
+#   push:
 
 jobs:
   build-macosx-image:

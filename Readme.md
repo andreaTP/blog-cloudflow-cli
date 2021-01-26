@@ -12,10 +12,11 @@ At the time I joined [Lightbend](https://www.lightbend.com/), the CLI used to be
 Another reason to reconsider that choice is the fact that support for Cloudflow's configuration format [HOCON](https://github.com/lightbend/config) is pretty poor in Go and caused a number of open issues not easly fixable.
 
 We decided to entirely re-write the CLI with those principles:
- - programming language the team is comfortable with -> Scala
- - native performance -> GraalVM AOT
- - industry's standard libraries -> Fabric8 Kubernetes Client
- - standard Scala's stack -> HOCON/Scopt/Airframe logging/Pureconfig ...
+
+ - programming language the team is comfortable with      -> Scala
+ - native performance                                     -> GraalVM AOT
+ - industry's standard libraries                          -> Fabric8 Kubernetes Client
+ - standard Scala's stack                                 -> HOCON/Scopt/Airframe logging/Pureconfig ...
 
 ## Give me the code!
 
