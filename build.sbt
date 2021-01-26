@@ -94,14 +94,14 @@ lazy val lp =
 // makePom fails, often with: java.lang.StringIndexOutOfBoundsException: String index out of range: 0
 addCommandAlias(
   "winGraalBuild",
-  s"""project cloudflow-cli; set makePom / publishArtifact := false; set graalVMNativeImageCommand := "${sys.env
+  s"""set makePom / publishArtifact := false; set graalVMNativeImageCommand := "${sys.env
     .get("JAVA_HOME")
     .getOrElse("")
     .replace("""\""", """\\\\""")}\\\\bin\\\\native-image.cmd"; graalvm-native-image:winPackageBin""")
 
 addCommandAlias(
   "linuxStaticBuild",
-  """project cloudflow-cli; set graalVMNativeImageGraalVersion := Some("20.1.0-java11"); set graalVMNativeImageOptions ++= Seq("--static", "-H:UseMuslC=/opt/graalvm/stage/resources/bundle/"); graalvm-native-image:packageBin""")
+  """set graalVMNativeImageGraalVersion := Some("20.1.0-java11"); set graalVMNativeImageOptions ++= Seq("--static", "-H:UseMuslC=/opt/graalvm/stage/resources/bundle/"); graalvm-native-image:packageBin""")
 
 addCommandAlias(
   "regenerateGraalVMConfig",

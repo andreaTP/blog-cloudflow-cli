@@ -34,7 +34,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'kubectl-lp-${{steps.vars.outputs.tag}}-darwin'
+          name: 'kubectl-lp-darwin'
           path: 'target/graalvm-native-image/kubectl-lp'
 
   build-linux-image:
@@ -64,7 +64,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'kubectl-lp-${{steps.vars.outputs.tag}}-linux'
+          name: 'kubectl-lp-linux'
           path: 'target/graalvm-native-image/kubectl-cloudflow'
 
   build-windows-image:
@@ -101,5 +101,5 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'kubectl-lp-${{steps.vars.outputs.tag}}-win'
+          name: 'kubectl-lp-win'
           path: '.\target\kubectl-cloudflow.exe'
