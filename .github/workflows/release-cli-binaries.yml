@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         with:
           name: 'kubectl-lp-linux'
-          path: 'target/graalvm-native-image/kubectl-cloudflow'
+          path: 'target/graalvm-native-image/kubectl-lp'
 
   build-windows-image:
     name: 'Build Windows Image'
@@ -102,4 +102,4 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         with:
           name: 'kubectl-lp-win'
-          path: '.\target\kubectl-cloudflow.exe'
+          path: '.\target\kubectl-lp.exe'
