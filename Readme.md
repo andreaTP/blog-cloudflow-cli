@@ -86,5 +86,19 @@ kubectl lp -o yaml
 Another very useful by-product is the fact that we have been able to re-use the Cli directly from ScalaTest (importing it as a dependency) and we have now full-Scala Integration tests without the need to run an external process and with helpful error messages in case something fails.
 We plan as well to port the Cloudflow operator to use the very same CRD/CR definition, immediatly reducing to 0 the possibility to introduce discrepancy in between the the CLI and the operator itself.
 
+## Conclusions
 
-<TODO check the CI>
+Rewriting a `kubectl` plugin from a standard Go stack to a more original approach has been challenging and rewarding.
+We are really happy with the result, and we arguably improved under a number of aspects:
+
+ - Improved user's experience in regard of ergonomy, feedback and validations
+ - More features and functionalities have been added easily
+ - The code-base is in a more familiar structure
+
+Cloudflow migrated to the new CLI seamlessly with customers and users that made the switch mostly without noticing.
+
+### References
+
+ - kubectl plugins documentation : https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/
+ - fabric8 : https://github.com/fabric8io/kubernetes-client
+ - graalVM : https://www.graalvm.org
