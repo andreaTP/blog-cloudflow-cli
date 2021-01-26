@@ -28,14 +28,14 @@ jobs:
 
       - name: 'Build Native Image'
         run: |
-          sbt cloudflow-cli/graalvm-native-image:packageBin
+          sbt graalvm-native-image:packageBin
 
       - name: 'Publish Native Image'
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'kubectl-cloudflow-${{steps.vars.outputs.tag}}-darwin'
-          path: 'cloudflow/tools/cloudflow-cli/target/graalvm-native-image/kubectl-cloudflow'
+          name: 'kubectl-lp-${{steps.vars.outputs.tag}}-darwin'
+          path: 'target/graalvm-native-image/kubectl-lp'
 
   build-linux-image:
     name: 'Build Linux Image'
@@ -54,21 +54,18 @@ jobs:
         uses: coursier/cache-action@v5
 
       - name: 'Build Native Image'
-        env:
-          VERSION: ${{ steps.vars.outputs.tag }}
         run: |
           docker pull andreatp/graalvm-ce:20.1.0-java11
           docker tag andreatp/graalvm-ce:20.1.0-java11 oracle/graalvm-ce:20.1.0-java11
 
-          sbt setVersionFromTag
           sbt linuxStaticBuild
 
       - name: 'Publish Native Image'
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'kubectl-cloudflow-${{steps.vars.outputs.tag}}-linux'
-          path: 'cloudflow/tools/cloudflow-cli/target/graalvm-native-image/kubectl-cloudflow'
+          name: 'kubectl-lp-${{steps.vars.outputs.tag}}-linux'
+          path: 'target/graalvm-native-image/kubectl-cloudflow'
 
   build-windows-image:
     name: 'Build Windows Image'
@@ -104,5 +101,5 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v2-preview
         with:
-          name: 'kubectl-cloudflow-${{steps.vars.outputs.tag}}-win'
-          path: '.\cloudflow\tools\cloudflow-cli\target\kubectl-cloudflow.exe'
+          name: 'kubectl-lp-${{steps.vars.outputs.tag}}-win'
+          path: '.\target\kubectl-cloudflow.exe'

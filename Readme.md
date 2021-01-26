@@ -42,7 +42,7 @@ kubectl lp list
 
 ## The stack
 
-In this example we use a few great libraries that, among others, have immensely helped this project to be successful.
+In this example we make use a few great libraries that, among others, have immensely helped this project to be successful.
 
  - [Scopt](https://github.com/scopt/scopt) for command line option parsing, it supports really well sub-commands and is a tiny lovely library.
  - [Airframe Log](https://github.com/wvlet/airframe/tree/master/airframe-log) for the "internal" logging.
@@ -62,9 +62,9 @@ Another disadvantage of GraalVM are the compilation times, currently the CLI tak
 
 The last issue we have had to overcome is the fact that GraalVM doesn't support cross-compilation, and, in this case, we simply leverage the CI(GH Actions) different runners to natively compile on the target architecture. We based our setup over this [precedent work](https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/.github/workflows/simple-socket-fn-logger.yaml).
 
-## Low hanging fruits
+## Benefits
 
-Reusing Java libraries gave us numerous benefits.
+Being able to directly use Java dependencies keep us in the comfort zone of a well known echosystem.
 
 Having an "internal" logging system that kick-in when necessary but gives the user the very same smooth experience as a "traditional" CLI is a big advantage.
 In case something goes wrong we are able to expose the internal stack-traces by simply adding the option `-v trace` at the end of our command.
