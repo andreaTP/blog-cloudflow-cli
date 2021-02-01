@@ -12,3 +12,8 @@
  - output formats
  - logging levels
  - re-use in it tests
+
+### More:
+
+ - a more detailed introduction
+ - think about a section on Scala libraries

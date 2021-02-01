@@ -2,37 +2,44 @@
 
 ## Motivation
 
-Since a few months I started working in [Lightbend](https://www.lightbend.com/), and my firsts assignments have been around a little known and super-powerful product called [Cloudflow](https://cloudflow.io/).
-TL;DR [Cloudflow](https://cloudflow.io/) is a set of libraries, tools, plugins to get you up-to-speed in developing Streaming applications on Kubernetes on top of popular streaming engines (Akka, Spark and Flink).
+Since a few months I started working in [Lightbend](https://www.lightbend.com/), and my first assignments have been around a little known yet super-powerful product called [Cloudflow](https://cloudflow.io/).
 
-One of the strenght of [Cloudflow](https://cloudflow.io/) is it's CLI that comes in the form of a `kubectl plugin`.
-In the CLI we perform an incredible amount of checks and validations that will prevent you from deploying an application not configured properly; and we automate a number of actions that will require specific and deep knowledge to be performed manually.
+__TL;DR__ [Cloudflow](https://cloudflow.io/) brings, super quickly, you up-to-speed in developing streaming applications on Kubernetes.
+Such applications are built on top of the most popular JVM's streaming engines (Akka, Spark and Flink) and Cloudflow provides you a battery-included set of libraries, tools and plugins for going sheltered from prototyping to production.
+
+One of the strenght of [Cloudflow](https://cloudflow.io/) is it's CLI that comes in the form of a `kubectl plugin`, with it you can use a quickly familiar `kubectl cloudflow` command to administrate your Cloudflow applications in the cluster.
+
+In the CLI we additionally perform an incredible amount of checks and validations that will prevent from deploying an application not configured properly; and we automate a number of actions that will require specific and deep knowledge to be performed manually.
 
 At the time I joined [Lightbend](https://www.lightbend.com/), the CLI used to be a classic Go application, organically grown up to the point technical debt prevented from easily adding functionalities and doing bug-fixes.
-Another reason to reconsider that choice is the fact that support for Cloudflow's configuration format [HOCON](https://github.com/lightbend/config) is pretty poor in Go and caused a number of open issues not easly fixable.
+Additionally, the support for Cloudflow's configuration format [HOCON](https://github.com/lightbend/config) is pretty poor in Go and it caused a number of open issues not easly fixable.
 
-We decided to entirely re-write the CLI with those principles:
+We therefore decided to consider a complete re-write of the CLI with those principles:
 
- - programming language the team is comfortable with      -> Scala
- - native performance                                     -> GraalVM AOT
- - industry's standard libraries                          -> Fabric8 Kubernetes Client
- - standard Scala's stack                                 -> HOCON/Scopt/Airframe logging/Pureconfig ...
+| Requirement | Solution |
+| --- | ---|
+| programming language the team is comfortable with | Scala  |
+| native performance | GraalVM AOT |
+| industry standard libraries | Fabric8 Kubernetes Client |
+| solid ecosystem/stack | HOCON/Scopt/Airframe logging/Pureconfig |
 
 ## Give me the code!
 
-The demo project we will refer to, is directly extracted from the Cloudflow's CLI, adapted to an example based this great article: [Kubectl's plugins in Java](https://dev.to/ikwattro/write-a-kubectl-plugin-in-java-with-jbang-and-fabric8-566) that happened to be published during our re-write.
+The demo project we refer to, is directly extracted from the Cloudflow's CLI, adapted to the example in this great article: [Kubectl's plugins in Java](https://dev.to/ikwattro/write-a-kubectl-plugin-in-java-with-jbang-and-fabric8-566) that happened to be published during our re-write.
 
 The code is available here:
-<TODO>
+https://github.com/andreaTP/blog-cloudflow-cli
 
-While original code of the Cloudflow CLI is open source here:
+For reference, the full code of the Cloudflow CLI, is open source here:
 https://github.com/lightbend/cloudflow/tree/master/tools
 
-You can generate the binaries(tested on MacOsX) running:
+For the impatients, you can generate the binary(tested on MacOsX) by running:
+
 ```
 sbt graalvm-native-image:packageBin
 ```
-and use them:
+
+and use it:
 ```
 export PATH=$PATH:$PWD/target/graalvm-native-image
 kubectl lp --help
@@ -43,17 +50,21 @@ kubectl lp list
 
 ## The stack
 
-In this example we make use a few great libraries that, among others, have immensely helped this project to be successful.
+In the example we make use of a little set of great libraries that, among others, have greatly helped this project to be successful.
 
- - [Scopt](https://github.com/scopt/scopt) for command line option parsing, it supports really well sub-commands and is a tiny lovely library.
- - [Airframe Log](https://github.com/wvlet/airframe/tree/master/airframe-log) for the "internal" logging.
- - [Fabric8 Kubernetes Client](https://github.com/fabric8io/kubernetes-client) an amazing project and, without it nothing would be possible, is a rock solid library that cover basically the entire Kubernetes API.
+ - [Scopt](https://github.com/scopt/scopt) for command line option parsing, it supports really well sub-commands which is important to give a more "kubernetes alike" experience and is a tiny lovely library.
+ - [Airframe Log](https://github.com/wvlet/airframe/tree/master/airframe-log) super easily customizable logging library used for the "internal" logging.
+ - [Fabric8 Kubernetes Client](https://github.com/fabric8io/kubernetes-client) without it nothing would be possible, it's a rock solid library that cover basically the entire Kubernetes API.
+
+In the "real" Cloudflow CLI we make use of an additional library worth a mention.
+
+ - [Pureconfig](https://pureconfig.github.io/) used for the validation of the configurations, as well as, a typesafe interface to generate valid HOCON. The quality of the produced error messages is astonishing and gives the user a precise indication of what should be actioned.
 
 ## GraalVM
 
-We reserve a special section to [GraalVM](https://github.com/oracle/graal), and, for the purpose of this post, we refer exclusively at the Ahead Of Time compilation functionality.
+We reserve a special section to [GraalVM](https://github.com/oracle/graal), for the purpose of this post, we refer exclusively at the Ahead Of Time compilation functionality.
 
-GraalVM enabled us to compile Scala code with Scala and Java dependencies directly down to native binaries so that, the user, wouldn't incur into the JVM long start-up time.
+GraalVM is the big enabler for this project letting us compile Scala code with Scala and Java dependencies directly down to native binaries so that, the user, wouldn't incur into the long JVM start-up time.
 It's an amazing project but it comes with a few challenges that we faced and solved!
 
 Unfortunately GraalVM compilation should be [configured](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/) and this configuration can become costly and risky to maintain; luckly we completely own the scope of our CLI and we can automate the generation of such configuration by simply training it against a real cluster.
