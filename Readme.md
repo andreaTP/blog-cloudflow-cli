@@ -65,7 +65,7 @@ In the "real" Cloudflow CLI we make use of an additional library worth a mention
 We reserve a special section to [GraalVM](https://github.com/oracle/graal), our biggest blessing and curse, and, for this post, we refer to it exclusively as the Ahead Of Time compiler.
 
 GraalVM is the big enabler for this project letting us compile Scala code with both Scala and Java dependencies directly down to native binaries so that the user won't incur a long JVM start-up time.
-It's an amazing project but, it comes with a few challenges that we faced and managed to overcome.
+It's an amazing project, but it comes with a few challenges that we faced and managed to overcome.
 
 Unfortunately, GraalVM compilation should be [configured](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/) and this configuration can become costly and risky to maintain (especially when using "reflection heavy" libraries such as Jackson); luckily we completely own the boundaries of our CLI and we can automate the generation of such configuration by training it against a real cluster.
 This boils down to run `sbt regenerateGraalVMConfig` every time we do a significant change to the CLI, this command will run an alternative `Main` of our application, intended to cover most of the possible code paths and invariants while recording the [Assisted configuration](https://www.graalvm.org/reference-manual/native-image/BuildConfiguration/#assisted-configuration-of-native-image-builds).
@@ -75,7 +75,7 @@ While this is a real time-sink in the very early days of development when you tr
 The ability to run, during development, on the JVM gives us the freedom to quickly try out Kubernetes commands against a cluster directly executing `sbt "run <command>"` and we can even use all the standard Java debugging tools.
 
 The last issue we have had the pleasure to go beyond is the fact that GraalVM doesn't support cross-compilation.
-In this case, we simply leverage the CI (GH Actions in this case) different runners to natively compile on the target architecture. We based our setup over this [precedent work](https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/.github/workflows/simple-socket-fn-logger.yaml).
+In this case, we simply leverage the CI (GH Actions in this case) different runners to natively compile on the target architecture. We based our setup on this [precedent work](https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/.github/workflows/simple-socket-fn-logger.yaml).
 
 ## Benefits
 
