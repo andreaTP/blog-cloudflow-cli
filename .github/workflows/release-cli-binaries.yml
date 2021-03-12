@@ -84,9 +84,9 @@ jobs:
         run: |
           gu.cmd install native-image
 
-      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
+      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2019 Build Tools'
         run: |
-          choco install visualstudio2017-workload-vctools
+          choco upgrade -y visualstudio2019-workload-vctools
 
       - name: 'Cache Coursier cache'
         uses: coursier/cache-action@v5
@@ -94,7 +94,7 @@ jobs:
       - name: 'Build Native Image'
         shell: cmd
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
           sbt winGraalBuild
 
       - name: 'Publish Windows Image'
